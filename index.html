@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+
+    <title>Icon Finder</title>
+
+    <script id="sap-ui-bootstrap"
+      type="text/javascript"
+      src="/ui5/latest/resources/sap-ui-core.js"
+      data-sap-ui-theme="sap_bluecrystal"
+      data-sap-ui-libs="sap.m"
+      data-sap-ui-xx-bindingSyntax="complex">
+    </script>
+
+    <script id="view-app" type="sapui5/xmlview">
+      <mvc:View
+        controllerName="app.controller"
+        displayBlock="true"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m">
+        <App id="idApp" />
+      </mvc:View>
+    </script>
+
+    <script id="view-main" type="sapui5/xmlview">
+      <mvc:View
+        displayBlock="true"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m">
+        <Page
+          title="Main">
+          <List
+            items="{
+              path : '/icons',
+              sorter : {
+                path : 'name'
+              }
+            }">
+            <items>
+              <StandardListItem
+                icon="{url}"
+                title="{name}" />
+            </items>
+          </List>
+          <footer>
+            <Bar />
+          </footer>
+        </Page>
+      </mvc:View>
+    </script>
+
+    <script id="view-detail" type="sapui5/xmlview">
+      <mvc:View
+        displayBlock="true"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m">
+        <Page
+          title="Detail">
+        </Page>
+      </mvc:View>
+    </script>
+
+    <script>
+      var sIconDbKey = "qmacro.icondb";
+      _g = sap.ui.getCore().byId;
+      sap.ui.controller("app.controller", {
+
+        onInit : function(oEvent) {
+
+          // Put the two views into the app view
+          var oApp = this.getView().byId("idApp");
+          ["main", "detail"].forEach(function(pageId) {
+            oApp.addPage(sap.ui.xmlview(pageId, {
+              viewContent : jQuery("#view-" + pageId).html()
+            }));
+          });
+
+          // Retrieve/create icon db and set JSON model
+          var iconDb = JSON.parse(localStorage.getItem(sIconDbKey));
+          if (iconDb) {
+            console.debug("Existing Icon DB");
+          } else {
+            console.debug("Creating new Icon DB");
+            jQuery.sap.require("sap.ui.core.IconPool");
+            iconDb = {
+              icons :
+                sap.ui.core.IconPool
+                  .getIconNames()
+                  .map(function(sName) {
+                  return {
+                    name : sName,
+                    url : sap.ui.core.IconPool.getIconURI(sName),
+                    aliases : []
+                  }
+                })
+              };
+            localStorage.setItem(sIconDbKey, JSON.stringify(iconDb));
+          }
+          this.getView().setModel(new sap.ui.model.json.JSONModel(iconDb));
+
+        }
+      });
+      sap.ui.xmlview({
+        viewContent: jQuery('#view-app').html()
+      }).placeAt("content");
+    </script>
+
+    <script src="http://localhost:35729/livereload.js"></script>
+  </head>
+
+  <body class="sapUiBody" id="content" />
+</html>
