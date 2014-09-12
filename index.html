@@ -6,6 +6,8 @@
 
     <title>Icon Finder</title>
 
+    <link rel="stylesheet" type="text/css" href="/ui5/latest/test-resources/sap/m/demokit/icon-explorer/css/style.css" />
+
     <script id="sap-ui-bootstrap"
       type="text/javascript"
       src="/ui5/latest/resources/sap-ui-core.js"
@@ -32,7 +34,16 @@
         xmlns="sap.m">
         <Page
           title="Main">
+          <subHeader>
+            <Bar>
+              <contentMiddle>
+                <SearchField
+                  liveChange="onSearchLiveChange" />
+              </contentMiddle>
+            </Bar>
+          </subHeader>
           <List
+            id="idList"
             mode="SingleSelectMaster"
             select="onIconSelect"
             items="{
@@ -64,6 +75,7 @@
           showNavButton="true"
           navButtonPress="onNavButtonPress"
           title="{name}">
+          <HBox id="iconArea" />
         </Page>
       </mvc:View>
     </script>
@@ -106,7 +118,9 @@
               };
             localStorage.setItem(sIconDbKey, JSON.stringify(iconDb));
           }
-          this.getView().setModel(new sap.ui.model.json.JSONModel(iconDb));
+          var oModel = new sap.ui.model.json.JSONModel(iconDb);
+          oModel.setSizeLimit(iconDb.icons.length);
+          this.getView().setModel(oModel);
 
         }
       });
@@ -119,6 +133,22 @@
           var oApp = this.getView().getParent();
           oApp.getPage("detail").setBindingContext(oContext);
           oApp.to("detail");
+        },
+
+        onSearchLiveChange : function(oEvent) {
+          var aFilters = [],
+              sNewValue = oEvent.getParameter("newValue"),
+              oBinding = this.getView().byId("idList").getBinding("items");
+
+          if (sNewValue) {
+            aFilters.push(new sap.ui.model.Filter({
+              path : "name",
+              operator : sap.ui.model.FilterOperator.Contains,
+              value1 : sNewValue
+            }));
+          }
+
+          oBinding.filter(aFilters);
         }
 
       });
@@ -126,9 +156,23 @@
 
       sap.ui.controller("detail.controller", {
 
+        onInit : function(oEvent) {
+          var oIconArea = this.getView().byId("iconArea");
+          for (var i = 1; i < 5; i++) {
+            oIconArea.addItem(new sap.ui.core.Icon({
+              src : "{url}",
+              size : "3em",
+              layoutData : new sap.m.FlexItemData({
+                growFactor : 1
+              })
+            }).addStyleClass("preview previewColor" + i))
+          }
+        },
+
         onNavButtonPress : function(oEvent) {
           this.getView().getParent().back();
         }
+
 
       });
 
