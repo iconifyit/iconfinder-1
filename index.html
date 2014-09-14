@@ -38,7 +38,8 @@
             <Bar>
               <contentMiddle>
                 <SearchField id="search"
-                  liveChange="onSearchLiveChange" />
+                  search="onSearch"
+                  liveChange="onLiveChange" />
               </contentMiddle>
             </Bar>
           </subHeader>
@@ -155,7 +156,13 @@
           oApp.to("detail");
         },
 
-        onSearchLiveChange : function(oEvent) {
+        onLiveChange : function(oEvent) {
+          if (jQuery.device.is.phone) {
+            this.onSearch(oEvent);
+          }
+        },
+
+        onSearch : function(oEvent) {
           var aFilters = [],
               sNewValue = oEvent.getParameter("newValue"),
               oBinding = this.getView().byId("idList").getBinding("items");
