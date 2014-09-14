@@ -157,21 +157,24 @@
         },
 
         onLiveChange : function(oEvent) {
-          if (jQuery.device.is.phone) {
-            this.onSearch(oEvent);
+          if (!jQuery.device.is.phone) {
+            this.query(oEvent.getParameter("newValue"));
           }
         },
 
         onSearch : function(oEvent) {
+          this.query(oEvent.getParameter("query"));
+        },
+
+        query : function(value) {
           var aFilters = [],
-              sNewValue = oEvent.getParameter("newValue"),
               oBinding = this.getView().byId("idList").getBinding("items");
 
-          if (sNewValue) {
+          if (value) {
             var oFilter = new sap.ui.model.Filter({
               path : "aliases",
               operator : sap.ui.model.FilterOperator.Contains,
-              value1 : sNewValue
+              value1 : value
             });
             oFilter.fnTest = jQuery.proxy(function(aliases) {
               var searchValue = this.getView().byId("search").getValue().toUpperCase();
