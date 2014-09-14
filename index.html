@@ -37,7 +37,7 @@
           <subHeader>
             <Bar>
               <contentMiddle>
-                <SearchField
+                <SearchField id="search"
                   liveChange="onSearchLiveChange" />
               </contentMiddle>
             </Bar>
@@ -112,7 +112,9 @@
                   return {
                     name : sName,
                     url : sap.ui.core.IconPool.getIconURI(sName),
-                    aliases : []
+                    aliases : [
+                      { name : sName } // seed with actual name
+                    ]
                   }
                 })
               };
@@ -141,11 +143,18 @@
               oBinding = this.getView().byId("idList").getBinding("items");
 
           if (sNewValue) {
-            aFilters.push(new sap.ui.model.Filter({
-              path : "name",
+            var oFilter = new sap.ui.model.Filter({
+              path : "aliases",
               operator : sap.ui.model.FilterOperator.Contains,
               value1 : sNewValue
-            }));
+            });
+            oFilter.fnTest = jQuery.proxy(function(aliases) {
+              var searchValue = this.getView().byId("search").getValue().toUpperCase();
+              return aliases.some(function(alias) {
+                return alias.name.toUpperCase().indexOf(searchValue) !== -1;
+              })
+            }, this);
+            aFilters.push(oFilter);
           }
 
           oBinding.filter(aFilters, sap.ui.model.FilterType.Application);
