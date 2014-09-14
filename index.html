@@ -141,9 +141,10 @@
       sap.ui.controller("main.controller", {
 
         onIconSelect : function(oEvent) {
-          var oContext = oEvent.getParameter('listItem').getBindingContext();
+          var oItem =  oEvent.getParameter('listItem');
           var oApp = this.getView().getParent();
-          oApp.getPage("detail").setBindingContext(oContext);
+          oApp.getPage("detail").setBindingContext(oItem.getBindingContext());
+          oItem.setSelected(false);
           oApp.to("detail");
         },
 
