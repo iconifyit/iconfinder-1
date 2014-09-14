@@ -86,6 +86,12 @@
                 <DisplayListItem
                   label="{name}" />
               </items>
+              <swipeContent>
+                <Button
+                  text="Remove"
+                  type="Reject"
+                  press="onRemovePress" />
+              </swipeContent>
             </List>
           </content>
         </Page>
@@ -201,6 +207,27 @@
           oModel.setProperty( "aliases", aAliases, oBindingContext);
           oEvent.getSource().setValue("");
           localStorage.setItem(sIconDbKey, JSON.stringify(oModel.getData()));
+        },
+
+        onRemovePress : function(oEvent) {
+          var oList = oEvent.getSource().getParent();
+          var oModel = oList.getModel();
+          var sPath = oList.getSwipedItem().getBindingContextPath();
+
+          // Split path just before the last numeric value
+          // e.g. /icons/166/aliases/2 -> /icons/166/aliases + 2
+          var aPathParts = sPath.match(/^(.+)\/(\d+)$/);
+          var sIconAliasesPath = aPathParts[1];
+          var nIconAliasSwiped = parseInt(aPathParts[2]);
+          var aAliases = oModel.getProperty(sIconAliasesPath);
+
+          // Remove the swiped alias
+          aAliases.splice(nIconAliasSwiped, 1);
+          oModel.setProperty(sIconAliasesPath, aAliases);
+          localStorage.setItem(sIconDbKey, JSON.stringify(oModel.getData()));
+
+          oList.swipeOut();
+
         }
 
       });
