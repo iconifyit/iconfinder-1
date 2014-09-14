@@ -75,13 +75,25 @@
           showNavButton="true"
           navButtonPress="onNavButtonPress"
           title="{name}">
-          <HBox id="iconArea" />
+          <content>
+            <HBox id="iconArea" />
+            <Input
+              placeholder="Add your alias suggestion here ..."
+              change="onInput" />
+            <List
+              items="{aliases}">
+              <items>
+                <DisplayListItem
+                  label="{name}" />
+              </items>
+            </List>
+          </content>
         </Page>
       </mvc:View>
     </script>
 
     <script>
-      _g = sap.ui.getCore().byId;
+      var sIconDbKey = "qmacro.icondb";
 
       sap.ui.controller("app.controller", {
 
@@ -94,8 +106,6 @@
               viewContent : jQuery("#view-" + pageId).html()
             }));
           });
-
-          var sIconDbKey = "qmacro.icondb";
 
           // Retrieve/create icon db and set JSON model
           var iconDb = JSON.parse(localStorage.getItem(sIconDbKey));
@@ -180,8 +190,17 @@
 
         onNavButtonPress : function(oEvent) {
           this.getView().getParent().back();
-        }
+        },
 
+        onInput : function(oEvent) {
+          var oBindingContext = oEvent.getSource().getBindingContext();
+          var oModel = oEvent.getSource().getModel();
+          var aAliases = oModel.getProperty("aliases", oBindingContext);
+          aAliases.push({ name : oEvent.getParameter("newValue") });
+          oModel.setProperty( "aliases", aAliases, oBindingContext);
+          oEvent.getSource().setValue("");
+          localStorage.setItem(sIconDbKey, JSON.stringify(oModel.getData()));
+        }
 
       });
 
