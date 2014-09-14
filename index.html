@@ -80,7 +80,7 @@
             <Input
               placeholder="Add new aliases here ..."
               change="onInput" />
-            <List
+            <List id="aliases"
               items="{aliases}">
               <items>
                 <DisplayListItem
@@ -129,7 +129,7 @@
                     name : sName,
                     url : sap.ui.core.IconPool.getIconURI(sName),
                     aliases : [
-                      { name : sName } // seed with actual name
+                      { name : sName, alias : false } // seed with actual name
                     ]
                   }
                 })
@@ -195,6 +195,18 @@
           }
         },
 
+        onAfterRendering : function(oEvent) {
+
+          // Don't display the actual icon name as an alias
+          this.getView().byId("aliases")
+            .getBinding("items")
+            .filter([new sap.ui.model.Filter({
+              path : "alias",
+              operator : sap.ui.model.FilterOperator.EQ,
+              value1 : true
+            })], sap.ui.model.FilterType.Application);
+        },
+
         onNavButtonPress : function(oEvent) {
           this.getView().getParent().back();
         },
@@ -203,8 +215,8 @@
           var oBindingContext = oEvent.getSource().getBindingContext();
           var oModel = oEvent.getSource().getModel();
           var aAliases = oModel.getProperty("aliases", oBindingContext);
-          aAliases.push({ name : oEvent.getParameter("newValue") });
-          oModel.setProperty( "aliases", aAliases, oBindingContext);
+          aAliases.push({ name : oEvent.getParameter("newValue"), alias : true });
+          oModel.setProperty("aliases", aAliases, oBindingContext);
           oEvent.getSource().setValue("");
           localStorage.setItem(sIconDbKey, JSON.stringify(oModel.getData()));
         },
@@ -239,7 +251,6 @@
 
     </script>
 
-    <script src="http://localhost:35729/livereload.js"></script>
   </head>
 
   <body class="sapUiBody" id="content" />
