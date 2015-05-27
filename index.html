@@ -8,9 +8,25 @@
 
     <link rel="stylesheet" type="text/css" href="/ui5/latest/test-resources/sap/m/demokit/icon-explorer/css/style.css" />
 
+    <script src="phonegap.js"></script>
+    <script>
+        document.addEventListener('deviceready', onDeviceReady);
+        function onDeviceReady()
+        {
+            var success = function(status) {
+                console.log('Cache cleared? ' + status);
+            };
+
+            var error = function(status) {
+                console.log('Cache cleared: ' + status);
+            };
+
+            window.cache.clear( success, error );
+        }
+    </script>
     <script id="sap-ui-bootstrap"
       type="text/javascript"
-      src="/ui5/latest/resources/sap-ui-core.js"
+      src="sdk/resources/sap-ui-core.js"
       data-sap-ui-theme="sap_bluecrystal"
       data-sap-ui-libs="sap.m"
       data-sap-ui-xx-bindingSyntax="complex">
@@ -60,7 +76,13 @@
             </items>
           </List>
           <footer>
-            <Bar />
+            <Bar>
+                <contentRight>
+                    <Button
+                        icon="sap-icon://bar-code"
+                        press="onBarcodePress" />
+                </contentRight>
+            </Bar>
           </footer>
         </Page>
       </mvc:View>
@@ -165,6 +187,33 @@
         onSearch : function(oEvent) {
           this.query(oEvent.getParameter("query"));
         },
+
+        onBarcodePress : function(oEvent) {
+   var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+   scanner.scan( function (result) {
+
+     alert("We got a barcode\n" +
+       "Result: " + result.text + "\n" +
+       "Format: " + result.format + "\n" +
+       "Cancelled: " + result.cancelled);
+
+     console.log("Scanner result: \n" +
+       "text: " + result.text + "\n" +
+       "format: " + result.format + "\n" +
+       "cancelled: " + result.cancelled + "\n");
+     document.getElementById("info").innerHTML = result.text;
+     console.log(result);
+     /*
+      if (args.format == "QR_CODE") {
+      window.plugins.childBrowser.showWebPage(args.text, { showLocationBar: false });
+      }
+      */
+
+   }, function (error) {
+     console.log("Scanning failed: ", error);
+   } );
+ },
 
         query : function(value) {
           var aFilters = [],

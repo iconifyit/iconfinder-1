@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="To use this indexing and caching mechanism for SAPUI5 applications, components, and libraries, you have to define the execution of the report /UI5/APP_INDEX_CALCULATE as a background job."/>
+<meta name="description" content="To use this indexing and caching mechanism for SAPUI5 applications, components, and libraries, you have to define the execution of the report /UI5/APP_INDEX_CALCULATE as a background job."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css"/>
+<title>SAPUI5 Application Index</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="sap_bluecrystal" id="loioc5e7098474274d3eb7379047ab792f1f">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1"><span class="ph pname">SAPUI5</span> Application Index</h1>
+<div class="body conbody"><p class="shortdesc">To use this indexing and caching mechanism for <span class="ph pname">SAPUI5</span> applications, components, and
+		libraries, you have to define the execution of the report /UI5/APP_INDEX_CALCULATE as a
+		background job.</p>
+<p class="p">The <span class="ph pname">SAPUI5</span> application index provides
+			an indexing and caching mechanism for information related to <span class="ph pname">SAPUI5</span> applications, components,
+			and libraries that are contained in <span class="ph pname">SAPUI5</span> repositories on the <span class="ph pname">SAP NetWeaver Application Server for ABAP</span>. It makes it possible to retrieve and find this
+			information significantly faster than when carrying out the calculations each time it is
+			requested.</p>
+<p class="p">The cached information consists of calculation results related to the back-end support for
+			cache busting on <span class="ph pname">SAPUI5</span>
+			repository level. The indexing refers specifically to <span class="ph pname">SAPUI5</span> applications or <span class="ph pname">SAPUI5</span> components with an <span class="ph pname">SAPUI5</span> component ID. For more
+			information, see <a class="xref" href="958ead51e2e94ab8bcdc90fb7e9d53d0.html" title="Components are independent and reusable parts used in OpenUI5 applications.">Concepts</a>.</p>
+<p class="p">If you activate cache busting in the SAP Fiori launchpad, the <span class="ph pname">SAPUI5</span> application index is used
+			to identify updated applications that need to be reloaded by the browser. For more
+			information, see SAP Library for User Interface Add-On 1.0 for SAP NetWeaver on SAP Help
+			Portal at <span class="ph filepath">http://help.sap.com/nw-uiaddon</span>. Under
+				<span class="ph uicontrol">Application Help</span>, open <span class="ph uicontrol">SAP Library</span> and
+			search for <kbd class="ph userinput">Cache Buster for SAP Fiori</kbd>.</p>
+<p class="p"><strong class="ph b">Calculation Report /UI5/APP_INDEX_CALCULATE</strong></p>
+<p class="p">The <span class="ph pname">SAPUI5</span> application index is
+			calculated by the report <span class="ph uicontrol">Calculation of SAPUI5 Application Index for SAPUI5
+				Repositories</span> (/UI5/APP_INDEX_CALCULATE).</p>
+<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">If you want to use the <span class="ph pname">SAPUI5</span>
+				application index, you have to define the execution of this report as a background
+				job as described below.</p>
+
+		</div>
+<p class="p">You can specify which <span class="ph pname">SAPUI5</span>
+			repositories are included by the report in the calculation of the <span class="ph pname">SAPUI5</span> application index:</p>
+<ul class="ul" id="loioc5e7098474274d3eb7379047ab792f1f__ul_ogg_tkn_kr"><li class="li">
+				<p class="p">All <span class="ph pname">SAPUI5</span> repositories</p>
+
+			</li>
+<li class="li">
+				<p class="p"><span class="ph pname">SAPUI5</span> repositories depending on
+					the expiration period you specified (in hours and minutes)</p>
+
+			</li>
+<li class="li">
+				<p class="p">A single <span class="ph pname">SAPUI5</span> repository</p>
+
+			</li>
+</ul>
+<p class="p">The <span class="ph pname">SAPUI5</span> application index is empty
+			initially and needs to be calculated from scratch.</p>
+<p class="p"><strong class="ph b">Execution as Background Job Required</strong></p>
+<p class="p">To use the <span class="ph pname">SAPUI5</span> application index
+			and to ensure that its content is up-to-date, you have to define the execution of the
+			report /UI5/APP_INDEX_CALCULATE as a background job (transaction SM36). This is because
+			changes to the <span class="ph pname">SAPUI5</span>
+			repositories do not automatically trigger a recalculation of the <span class="ph pname">SAPUI5</span> application index.</p>
+<p class="p">Example: You want the <span class="ph pname">SAPUI5</span>
+			application index to be recalculated completely every two hours. You define a variant
+			with <span class="ph uicontrol">All SAPUI5 repositories</span> as execution mode, use this variant
+			in the definition of the background job, and set the execution period for the job to two
+			hours.</p>
+<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">Make sure that you schedule a time interval that matches your needs. For frequently
+				updated systems an interval of ten minutes might be appropriate.</p>
+
+		</div>
+<p class="p">However, it might be useful to execute the report manually to recalculate the <span class="ph pname">SAPUI5</span> application index or parts
+			of it after changes are made to the content of the <span class="ph pname">SAPUI5</span> repositories, for example
+			in the following cases:</p>
+<ul class="ul" id="loioc5e7098474274d3eb7379047ab792f1f__ul_rhg_mln_kr"><li class="li">
+				<p class="p">In a development scenario where changes are required to become effective before
+					the next execution of the report as a background job</p>
+
+			</li>
+<li class="li">
+				<p class="p">After submitting changes using the <span class="ph pname">SAPUI5</span> ABAP repository
+					team provider or when the interactive <span class="ph pname">SAPUI5</span> repository load
+					tool has been used</p>
+
+			</li>
+<li class="li">
+				<p class="p">After importing SAP notes or ABAP transports</p>
+
+			</li>
+</ul>
+<p class="p"><strong class="ph b">Monitoring Background Jobs</strong></p>
+<p class="p">You can use the Computing Center Management System (CCMS) to monitor the execution of
+			background jobs. For example, you can set up alerts for the report
+			/UI5/APP_INDEX_CALCULATE by using the data collection method CCMS_BATCH_MONITORING and
+			the analysis method CCMS_BP_MON_ANALYZE.</p>
+<div class="note note"><span class="notetitle">Note</span> 
+			<p class="p">This monitoring refers only to the executions of the job itself. It does not detect
+				any application log entries with problems created by the report.</p>
+
+		</div>
+<p class="p">For more information, see SAP Library for <span class="ph pname">SAP NetWeaver</span> at
+				<span class="ph filepath">http://help.sap.com/nw_platform</span>. Under <span class="ph uicontrol">Application
+				Help</span>, open <span class="ph uicontrol">SAP NetWeaver Business Warehouse</span> and
+			search for <kbd class="ph userinput">Monitoring Jobs with the Alert Monitor</kbd> and
+				<kbd class="ph userinput">Setting Up the Monitoring of Jobs with the Alert Monitor</kbd>.</p>
+<p class="p"><strong class="ph b">Application Log</strong></p>
+<p class="p">Issues during the recalculation of the <span class="ph pname">SAPUI5</span> application index are
+			written as the following messages to the application log:</p>
+
+<div class="tablenoborder"><table summary="" id="loioc5e7098474274d3eb7379047ab792f1f__table_udd_kdb_nr" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="33.333333333333336%"/><col width="33.333333333333336%"/><col width="33.333333333333336%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="33.33333333333333%" id="d1959422e233">
+							<p class="p">Message Type</p>
+
+						</th>
+<th class="entry" valign="top" width="33.33333333333333%" id="d1959422e238">
+							<p class="p">Classification</p>
+
+						</th>
+<th class="entry" valign="top" width="33.33333333333333%" id="d1959422e243">
+							<p class="p">Issue</p>
+
+						</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e233 ">
+							<p class="p">Error</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e238 ">
+							<p class="p">Very high</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e243 ">
+							<p class="p">Exception because manifest.json file is not valid or cache buster
+								token could not be calculated</p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e233 ">
+							<p class="p">Error</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e238 ">
+							<p class="p">High</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e243 ">
+							<p class="p">Component ID occurs/is used more than once</p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e233 ">
+							<p class="p">Warning</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e238 ">
+							<p class="p">Medium</p>
+
+						</td>
+<td class="entry" valign="top" width="33.33333333333333%" headers="d1959422e243 ">
+							<p class="p">Component ID is potentially not valid</p>
+
+						</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">To access the application log, choose <span class="ph uicontrol">View … Logs</span> in the report
+			/UI5/APP_INDEX_CALCULATE. The application log is also persisted in client 000 by default
+			and can be analyzed using transaction SLG1.</p>
+<p class="p">Technically, the application log is referenced by the object /UI5/APPIDX. This object has
+			the following subobjects:</p>
+
+<div class="tablenoborder"><table summary="" id="loioc5e7098474274d3eb7379047ab792f1f__table_n3m_nmn_kr" class="table" frame="border" border="1" rules="all">
+<colgroup><col width="50%"/><col width="50%"/></colgroup>
+<thead class="thead" align="left"><tr class="row"><th class="entry" valign="top" width="50%" id="d1959422e311">
+							<p class="p">Subobject</p>
+
+						</th>
+<th class="entry" valign="top" width="50%" id="d1959422e316">
+							<p class="p">Application Log Entries</p>
+
+						</th>
+</tr>
+</thead>
+<tbody class="tbody"><tr class="row"><td class="entry" valign="top" width="50%" headers="d1959422e311 ">
+							<p class="p">GENERAL</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d1959422e316 ">
+							<p class="p">General information like time and duration of the last calculation of the <span class="ph pname">SAPUI5</span>
+								application index, number of <span class="ph pname">SAPUI5</span>
+								repositories, and number of updated table entries</p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d1959422e311 ">
+							<p class="p">UI5REP</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d1959422e316 ">
+							<p class="p">Error messages that occurred when a <span class="ph pname">SAPUI5</span>
+								repository was processed</p>
+
+							<p class="p">The external ID is the <span class="ph pname">SAPUI5</span>
+								repository name.</p>
+
+						</td>
+</tr>
+<tr class="row"><td class="entry" valign="top" width="50%" headers="d1959422e311 ">
+							<p class="p">UI5COMP</p>
+
+						</td>
+<td class="entry" valign="top" width="50%" headers="d1959422e316 ">
+							<p class="p"><span class="ph pname">SAPUI5</span> component-related
+								messages from a consistency check carried out at the end of the
+								calculation of the <span class="ph pname">SAPUI5</span>
+								application index</p>
+
+							<p class="p">The consistency check includes the following:</p>
+
+							<ul class="ul" id="loioc5e7098474274d3eb7379047ab792f1f__ul_nbd_5mn_kr"><li class="li">
+									<p class="p">Whether the same component ID is contained in more than one <span class="ph pname">SAPUI5</span> repository</p>
+
+								</li>
+<li class="li">
+									<p class="p">Whether the component ID is valid</p>
+
+								</li>
+<li class="li">
+									<p class="p">Whether a reuse component defined in the dependencies is not contained in the <span class="ph pname">SAPUI5</span> application index</p>
+
+								</li>
+</ul>
+
+							<p class="p">The external ID is the <span class="ph pname">SAPUI5</span>
+								component ID.</p>
+
+						</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="p">The application log contains only entries of the last run of the report
+			/UI5/APP_INDEX_CALCULATE and any older entries are removed automatically. For more
+			information, see SAP Library for <span class="ph pname">SAP NetWeaver</span> at
+				<span class="ph filepath">http://help.sap.com/nw_platform</span>. Under <span class="ph uicontrol">Application
+				Help</span>, open <span class="ph uicontrol">SAP NetWeaver Business Warehouse</span> and
+			search for <kbd class="ph userinput">Analyze Logs</kbd>.</p>
+<p class="p"><strong class="ph b">Monitoring Application Logs</strong></p>
+<p class="p">To monitor the calculation results, you might want to build CCMS methods that evaluate the
+			application logs for the object /UI5/APPIDX and the subobjects GENERAL, UI5REP, and
+			UI5COMP. For more information, see SAP Library for <span class="ph pname">SAP NetWeaver</span> on SAP Help Portal at
+				<span class="ph filepath">http://help.sap.com/nw_platform</span>. Under <span class="ph uicontrol">Application
+				Help</span>, open <span class="ph uicontrol">SAP NetWeaver Business Warehouse</span> and
+			search for <kbd class="ph userinput">Creating a Data Supplier for the CCMS Alert Monitor</kbd>
+			and <kbd class="ph userinput">Application Log (BC-SRV-BAL)</kbd>.</p>
+</div>
+</div></div>
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="SAPUI5 Application Index";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>

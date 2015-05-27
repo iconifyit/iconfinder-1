@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+
+
+<meta name="abstract" content="The OpenUI5 Repository technically bases on the BSP repository of the ABAP server. The BSP repository is only used as a repository or storage for OpenUI5 application files; the BSP runtime, however, is not used at runtime and, hence, the flow logic ABAP parts cannot be used as they are not executed at runtime."/>
+<meta name="description" content="The OpenUI5 Repository technically bases on the BSP repository of the ABAP server. The BSP repository is only used as a repository or storage for OpenUI5 application files; the BSP runtime, however, is not used at runtime and, hence, the flow logic ABAP parts cannot be used as they are not executed at runtime."/>
+
+<link rel="stylesheet" type="text/css" href="css/documentation.css"/>
+<title>Using the OpenUI5 Repository</title>
+<!--[if lte IE 7]><style>
+      .codeblock{
+          overflow:visible;
+      }</style><![endif]-->
+
+
+  <script src="../../resources/sap/ui/thirdparty/jquery/jquery-1.11.1.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/highlight-query-terms.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/themes/base/highlight-query-terms.css" />
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/run_prettify.js"></script>
+    <script src="../../resources/sap/ui/demokit/js/google-code-prettify/lang-css.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../resources/sap/ui/demokit/js/google-code-prettify/prettify.css" />
+  </head>
+<body class="sap_bluecrystal" id="loio91f346786f4d1014b6dd926db0e91070">
+<div id="wrapper"><div id="container">
+<h1 class="title topictitle1">Using the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+		Repository</h1>
+<div class="body"><p class="shortdesc">The <span class="ph"><span class="ph pname">OpenUI5</span></span> Repository technically bases on the BSP repository of the ABAP server. The
+		BSP repository is only used as a repository or storage for <span class="ph"><span class="ph pname">OpenUI5</span></span> application files; the BSP
+		runtime, however, is not used at runtime and, hence, the flow logic ABAP parts cannot be
+		used as they are not executed at runtime.</p>
+<p class="p">The following sections describe how to use the <span class="ph"><span class="ph pname">OpenUI5</span></span> Repository and how to deploy the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+			application project on the ABAP Server. For this application type, the ABAP Server is
+			used as a file share to serve browser requests.</p>
+<div class="section" id="loio91f346786f4d1014b6dd926db0e91070__section_E3530B3A127642F4A9C22551EDD7E466"><div class="section_title">Availability</div><div type="Availability">
+			
+			<p class="p">The <span class="ph"><span class="ph pname">OpenUI5</span></span> repository is available in SAP Business Suite systems with version 7.00 or higher
+				containing the user interface add-on for <span class="ph pname">SAP NetWeaver</span>, which contains the software
+				component <samp class="ph codeph">UI_INFRA</samp>. The team repository provider functionality,
+				which is available in the Eclipse IDE, is available in SAP Business Suite systems
+				with version <strong class="ph b">7.31</strong> containing the user interface add-on, which contains the
+				software components <samp class="ph codeph">UI_INFRA</samp> and <samp class="ph codeph">UI5_731</samp>. </p>
+
+			<p class="p">The used <span class="ph"><span class="ph pname">OpenUI5</span></span> libraries are available in SAP Business Suite systems with version 7.00 or
+				higher containing the UI add-on for <span class="ph pname">SAP NetWeaver</span> in the software component
+					<samp class="ph codeph">UISAPUI5</samp>.</p>
+
+			<p class="p">As of <span class="ph pname">SAP NetWeaver 7.4</span> SP1 all required <span class="ph"><span class="ph pname">OpenUI5</span></span> parts are already part of software
+				component <samp class="ph codeph">SAP_UI</samp>.</p>
+
+			<p class="p">As an alternative for SAP Business Suite system of version 7.00 and higher you can
+				use an interactive ABAP report offering similiar functionality. For more
+				information, see the report documentation <a class="xref" href="a560bd6ed4654fd1b338df065d331872.html" title="You can either upload a OpenUI5 application to or download a OpenUI5 application from the OpenUI5 repository by using an interactive ABAP report.">Using an Interactive ABAP Report to Synchronize</a>.</p>
+
+		</div></div>
+<div class="section" id="loio91f346786f4d1014b6dd926db0e91070__section_DE87631174F443D5A899DC414BA4B955"><div class="section_title">Enabling Virus Scan During Upload</div><div type="Enabling Virus Scan During Upload">
+			
+			<p class="p">When uploading the files to the <span class="ph"><span class="ph pname">OpenUI5</span></span> repository, you can perform a virus scan. </p>
+
+			<p class="p">As of <span class="ph pname">SAP NetWeaver 7.0</span>, SAP delivers the following virus scan profile for ABAP with the UI
+				Add-On: <samp class="ph codeph">/UI5/UI5_INFRA_APP/REP_DT_PUT</samp>. </p>
+
+			<p class="p">This profile is used by the <span class="ph"><span class="ph pname">OpenUI5</span></span> repository API to store files in the <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				repository based on BSP repository. For example: Upload of a local file using <span class="ph"><span class="ph pname">OpenUI5</span></span>
+				repository API <samp class="ph codeph">/UI5/CL_REP_DT</samp>, method
+					<samp class="ph codeph">/UI5/IF_UI5_REP_DT~PUT_FILE</samp> from <span class="ph pname">SAP NetWeaver 7.0</span> on, or the
+				<span class="ph"><span class="ph pname">OpenUI5</span></span> team repository provider in <span class="ph pname">SAP NetWeaver 7.3 EHP1</span> or 7.40. </p>
+
+			<p class="p">The profile is deactivated when delivered. To activate it, create at least one basis profile.
+				You can then activate one of the delivered profiles. By default, it links to a
+				reference profile, which is the default profile. </p>
+
+		</div></div>
+<div class="section"><div class="section_title">Remarks</div><div type="Remarks">
+			
+		</div></div>
+<p class="p">If you view the corresponding BSP pages on the ABAP server, they might look different to
+			the version in Eclipse or at runtime: </p>
+<ul class="ul" id="loio91f346786f4d1014b6dd926db0e91070__ul_bf1_xbf_5l"><li class="li">
+				<p class="p">Trailing spaces in text lines are escaped with "!&amp;nbsp;" in the respective
+					BSP pages. </p>
+
+			</li>
+<li class="li">
+				<p class="p">Lines longer than 254 are broken into several lines and have a + on position 255.
+				</p>
+
+			</li>
+</ul>
+</div>
+</div></div>
+<SCRIPT LANGUAGE="JavaScript"><!--
+ var page_title="Using the OpenUI5 Repository";
+
+        if (page_title !='' &&
+        parent.document.title != null) {
+ parent.document.title =
+          page_title;
+ } 
+ var
+        anchor = document.getElementById(location.hash.substring(+1)); if (typeof (anchor)
+        !='undefined' && anchor !=null){
+        var top = anchor.getBoundingClientRect().top; } 
+//-->
+</SCRIPT>
+</body>
+</html>
