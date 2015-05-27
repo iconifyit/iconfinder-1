@@ -8,6 +8,14 @@
 
     <link rel="stylesheet" type="text/css" href="/ui5/latest/test-resources/sap/m/demokit/icon-explorer/css/style.css" />
 
+    <script id="sap-ui-bootstrap"
+      type="text/javascript"
+      src="resources/sap-ui-core.js"
+      data-sap-ui-theme="sap_bluecrystal"
+      data-sap-ui-libs="sap.m"
+      data-sap-ui-xx-bindingSyntax="complex">
+    </script>
+
     <script src="phonegap.js"></script>
     <script>
         document.addEventListener('deviceready', onDeviceReady);
@@ -24,14 +32,6 @@
             window.cache.clear( success, error );
         }
     </script>
-    <script id="sap-ui-bootstrap"
-      type="text/javascript"
-      src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
-      data-sap-ui-theme="sap_bluecrystal"
-      data-sap-ui-libs="sap.m"
-      data-sap-ui-xx-bindingSyntax="complex">
-    </script>
-
     <script id="view-app" type="sapui5/xmlview">
       <mvc:View
         controllerName="app.controller"
